@@ -1,31 +1,25 @@
 import { Client, DeleteDocumentParams, IndexDocumentParams, SearchParams } from 'elasticsearch';
+import { Service } from 'typedi';
 
-export class ElasticSearchClient {
-	private static connection: Client;
+@Service()
+export default class ElasticSearchClient {
+	private readonly connection: Client;
 
-	private constructor() {}
-
-	public static getInstance(): ElasticSearchClient {
-		if (!this.connection) {
-			this.connection = new Client({
-				host: 'localhost:9200',
-			});
-		}
-
-		return this.connection;
+	private constructor() {
+		this.connection = new Client({
+			host: 'localhost:9200',
+		});
 	}
 
-	public static createIndex<T>(params: IndexDocumentParams<T>) {
+	public createIndex<T>(params: IndexDocumentParams<T>) {
 		return this.connection.index<T>(params);
 	}
 
-	public static searchIndex<T>(params: SearchParams) {
+	public searchIndex<T>(params: SearchParams) {
 		return this.connection.search<T>(params);
 	}
 
-	public static deleteIndex(params: DeleteDocumentParams) {
+	public deleteIndex(params: DeleteDocumentParams) {
 		return this.connection.delete(params);
 	}
 }
-
-ElasticSearchClient.getInstance();

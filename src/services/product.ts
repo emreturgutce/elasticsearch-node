@@ -1,27 +1,33 @@
-import { ElasticSearchClient } from '../config/elasticsearch';
+import {Service} from 'typedi';
+import ElasticSearchClient from '../config/elasticsearch';
 import { Product } from '../models/product';
 
-export class ProductService {
-	private static readonly baseParams = {
+@Service()
+export default class ProductService {
+	private readonly baseParams = {
 		index: 'products',
 		type: 'product',
 	};
 
-	public static createProduct(product: Product) {
-		return ElasticSearchClient.createIndex<Product>({
+	constructor(
+		private readonly elasticSearchClient: ElasticSearchClient,
+	) {}
+
+	public createProduct(product: Product) {
+		return this.elasticSearchClient.createIndex<Product>({
 			...this.baseParams,
 			body: product,
 		});
 	}
 
-	public static searchProducts() {
-		return ElasticSearchClient.searchIndex<Product>({
+	public searchProducts() {
+		return this.elasticSearchClient.searchIndex<Product>({
 			...this.baseParams,
 		});
 	}
 
-	public static deleteProduct(id: string) {
-		return ElasticSearchClient.deleteIndex({
+	public deleteProduct(id: string) {
+		return this.elasticSearchClient.deleteIndex({
 			...this.baseParams,
 			id,
 		});
