@@ -1,4 +1,4 @@
-import {Service} from 'typedi';
+import { Service } from 'typedi';
 import ElasticSearchClient from '../config/elasticsearch';
 import { Product } from '../models/product';
 
@@ -14,20 +14,20 @@ export default class ProductService {
 	) {}
 
 	public createProduct(product: Product) {
-		return this.elasticSearchClient.createIndex<Product>({
+		return this.elasticSearchClient.createDocument<Product>({
 			...this.baseParams,
 			body: product,
 		});
 	}
 
 	public searchProducts() {
-		return this.elasticSearchClient.searchIndex<Product>({
+		return this.elasticSearchClient.searchDocument<Product>({
 			...this.baseParams,
 		});
 	}
 
 	public deleteProduct(id: string) {
-		return this.elasticSearchClient.deleteIndex({
+		return this.elasticSearchClient.deleteDocument({
 			...this.baseParams,
 			id,
 		});

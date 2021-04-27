@@ -11,15 +11,15 @@ export default class ElasticSearchClient {
 		});
 	}
 
-	public createIndex<T>(params: IndexDocumentParams<T>) {
+	public createDocument<T>(params: IndexDocumentParams<T>) {
 		return this.connection.index<T>(params);
 	}
 
-	public searchIndex<T>(params: SearchParams) {
+	public searchDocument<T>(params: SearchParams) {
 		return this.connection.search<T>(params);
 	}
 
-	public deleteIndex(params: DeleteDocumentParams) {
+	public deleteDocument(params: DeleteDocumentParams) {
 		return this.connection.delete(params);
 	}
 }
