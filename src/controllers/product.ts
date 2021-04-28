@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 import { Container } from 'typedi';
 import { CREATED } from 'http-status';
@@ -10,26 +10,20 @@ const router = Router();
 
 const productService = Container.get(ProductService);
 
-router.post(
-	'/',
-	validateProduct,
-	async (req: Request, res: Response, next: NextFunction) => {
-		try {
-			await productService.createProduct(req.body);
+router.post('/', validateProduct, async (req: Request, res: Response) => {
+	try {
+		await productService.createProduct(req.body);
 
-			res.status(CREATED).json({
-				success: true,
-				message: 'Product saved.',
-			});
-		} catch (error) {
-			next(
-				new createHttpError.InternalServerError('Something went wrong'),
-			);
-		}
-	},
-);
+		res.status(CREATED).json({
+			success: true,
+			message: 'Product saved.',
+		});
+	} catch (error) {
+		throw new createHttpError.InternalServerError('Something went wrong');
+	}
+});
 
-router.get('/', async (_, res, next) => {
+router.get('/', async (_, res) => {
 	try {
 		const result = await productService.searchProducts();
 
@@ -41,11 +35,11 @@ router.get('/', async (_, res, next) => {
 			},
 		});
 	} catch (error) {
-		next(new createHttpError.InternalServerError('Something went wrong'));
+		throw new createHttpError.InternalServerError('Something went wrong');
 	}
 });
 
-router.delete('/:id', validateId, async (req, res, next) => {
+router.delete('/:id', validateId, async (req, res) => {
 	try {
 		const result = await productService.deleteProduct(req.params.id);
 
@@ -57,7 +51,7 @@ router.delete('/:id', validateId, async (req, res, next) => {
 			},
 		});
 	} catch (error) {
-		next(new createHttpError.InternalServerError('Something went wrong'));
+		throw new createHttpError.InternalServerError('Something went wrong');
 	}
 });
 
