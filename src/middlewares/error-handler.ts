@@ -11,9 +11,9 @@ export const errorHandler = (
 	if (error instanceof HttpError) {
 		return response
 			.status(error.statusCode)
-			.json({ message: error.message, status: error.statusCode });
+			.json({ message: error.message, success: false });
 	}
 
 	response.status(INTERNAL_SERVER_ERROR)
-		.json({ error: 'Internal Server Error', status: INTERNAL_SERVER_ERROR });
+		.json({ message: 'Internal Server Error', success: false });
 };

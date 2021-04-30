@@ -35,6 +35,7 @@ export default class ProductController {
 				},
 			});
 		} catch (error) {
+			console.log(error);
 			throw new createHttpError.InternalServerError('Something went wrong');
 		}
 	}

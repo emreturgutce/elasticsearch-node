@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: Elasticsearch Node
+  description: Nodejs api using Elasticsearch.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local development server
+paths:
+  /products:
+    get:
+      summary: Returns a list of products.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':
+          description: A JSON object which contains products
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      hits:
+                        type: array
+                        items: 
+                          type: string
+        '500':
+          description: A JSON object which contains products
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
